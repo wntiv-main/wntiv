@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Enigma</title>
+        <script src="Enigma.js"></script>
+    </head>
+    <body>
+        <script defer>
+            e=new Enigma((prompt('Enter your Key')));
+            function URLdat(){
+                var x = (location.search||location.hash).substring(1), o={};
+                x=x.split('&');
+                for(var i=0;i<x.length;i++){
+                    o[x[i].split('=')[0]] = x[i].split('=')[1];
+                }
+                return o;
+            }
+            switch(URLdat().type){
+                case 'encode':
+                    prompt('Encoded Message', (a=e.encode(prompt('Enter your message:')), a));
+                break;
+                case 'decode':
+                    prompt('Decoded Message:', (a=e.decode(prompt('Enter the encoded message:')), a));
+                break;
+            }
+        </script>
+    </body>
+</html>
