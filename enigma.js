@@ -39,8 +39,8 @@ function Enigma(setupKey) {
     /*end setup*/
 }
 Enigma.prototype.encode = function (message) {
-    var retval = {encoded:"", capMap:[], fix:false};
-    retval.fix = (message[message.length-1]=='?');
+    var retval = {encoded:"", capMap:[]};
+    message+='?encoded=true';
     message = btoa(message);
     var encode = (function(enigma){
         return function encode(char){
@@ -66,7 +66,7 @@ Enigma.prototype.encode = function (message) {
 }
 Enigma.prototype.decode = function (encoded) {
     encoded = JSON.parse(encoded);
-    var message = btoa(encoded.encoded), capmap = encoded.capMap, fix = encoded.fix;
+    var message = btoa(encoded.encoded), capmap = encoded.capMap;
     var retval = "";
     var encode = (function(enigma){
         return function encode(char){
@@ -91,7 +91,6 @@ Enigma.prototype.decode = function (encoded) {
         if(capmap[i]){retval[i] = retval[i].toUpperCase();}else{retval[i] = retval[i].toLowerCase();}
     }
     retval = atob(retval.join(''));
-    if(fix&&retval[retval.length-1]=='>')retval[retval.length-1]='?';
     return retval;
 }
 Enigma.prototype.spin = function (x) {
