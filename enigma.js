@@ -62,10 +62,10 @@ Enigma.prototype.encode = function (message) {
         retval.encoded+=("ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(char.toUpperCase())?(encodded=encode(char), this.spin(), encodded):char);
     }
     retval.encoded = atob(retval.encoded);
-    return JSON.stringify(retval);
+    return Enigma.stringify(retval);
 }
 Enigma.prototype.decode = function (encoded) {
-    encoded = JSON.parse(encoded);
+    encoded = Enigma.parse(encoded);
     var message = btoa(encoded.encoded), capmap = encoded.capMap;
     var retval = "";
     var encode = (function(enigma){
@@ -91,8 +91,7 @@ Enigma.prototype.decode = function (encoded) {
         if(capmap[i]){retval[i] = retval[i].toUpperCase();}else{retval[i] = retval[i].toLowerCase();}
     }
     retval = atob(retval.join(''));
-    retval = retval.split('?');
-    retval.splice(retval.length-1);
+    retval = retval.split('?').pop().join('?');
     return retval;
 }
 Enigma.prototype.spin = function (x) {
@@ -204,7 +203,19 @@ Enigma.Reflector.prototype.encode = function (char) {
     }
     return retval;
 }
-
+Enigma.stringify = function(obj){
+    var result = '';
+    result+=obj.encoded+';';
+    for(var i=0;i<obj.capMap.length;i++){result+=(obj.capMap[i]?1:0)}
+    return result;
+}
+Enigma.parse = function(str){
+    var result = {encoded:'', capMap:[]};
+    var parts = str.split(';'), caps = parts.pop();
+    result.encoded = parts.join(';');
+    for(var i=0;i<caps.length;i++){result.capMap.push((caps[i]=='1'?!0:!1));}
+    return result;
+}
 /* AB CD EF GH:AB CD EF GH:[ROTOR]![ROTOR]:FM   *\
 |  |_________| |_________| |_____________| ||   |
 |   PLUGBOARD   REFLECTOR      ROTORS      ||   |
