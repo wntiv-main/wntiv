@@ -91,7 +91,7 @@ Enigma.prototype.decode = function (encoded) {
         if(capmap[i]){retval[i] = retval[i].toUpperCase();}else{retval[i] = retval[i].toLowerCase();}
     }
     retval = atob(retval.join(''));
-    retval = retval.split('?').pop().join('?');
+    retval = ((retval.split('?')).pop()).join('?');
     return retval;
 }
 Enigma.prototype.spin = function (x) {
