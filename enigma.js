@@ -90,8 +90,8 @@ Enigma.prototype.decode = function (encoded) {
     for(var i=0;i<Math.min(capmap.length, retval.length);i++){
         if(capmap[i]){retval[i] = retval[i].toUpperCase();}else{retval[i] = retval[i].toLowerCase();}
     }
-    retval = atob(retval.join(''));
-    retval = (retval=retval.split('?'), retval.pop(), retval).join('?');
+    //retval = atob(retval.join(''));
+    //retval = (retval=retval.split('?'), retval.pop(), retval).join('?');
     return retval;
 }
 Enigma.prototype.spin = function (x) {
