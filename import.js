@@ -50,7 +50,7 @@ function importURL(URL, callback){
           callback((new Function(xhr.response)).bind({})());
         break;
         default:
-          callback(xhr.result);
+          callback(xhr.response);
         break;
       }
     }
