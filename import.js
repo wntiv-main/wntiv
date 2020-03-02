@@ -48,7 +48,7 @@ function importURL(URL, callback){
       this.response = xhr.response;
       switch(this.URL.fileext){
         case '.js':
-          callback((new Function(xhr.response)).bind({})());
+          callback((new Function(xhr.response)).bind(window)());
         break;
         default:
           callback(xhr.response);
