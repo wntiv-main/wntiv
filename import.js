@@ -32,7 +32,7 @@ function url2Object(URL){
   }else{
     urlObject.hostname = urlObject.origin = '';
   }
-  if(urlObject.path[0]!='/'){urlObject.path='/'+urlObject.path;}
+  if(urlObject.pathname[0]!='/'){urlObject.path='/'+urlObject.path;}
   urlObject.port = '';
   urlObject.href = urlObject.protocol+'//'+urlObject.host+urlObject.pathname+(urlObject.search?urlObject.search:urlObject.hash);
   if(urlObject.pathname.split('/')[urlObject.pathname.split('/').length-1].includes('.')){
