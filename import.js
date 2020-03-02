@@ -39,7 +39,7 @@ function url2Object(URL){
   }else urlObject.fileext = undefined;
   return urlObject;
 }
-function import(URL, callback){
+function importURL(URL, callback){
   if(typeof callback!='function')callback=(()=>{});
   var result = {URL:url2Object(URL)};
   xhr=new XMLHttpRequest(), xhr.onreadystatechange=(function(xhr, callback){
