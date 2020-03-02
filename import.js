@@ -54,7 +54,7 @@ function importURL(URL, callback){
         break;
       }
     }
-  }).bind(result, xhr, callback), xhr.open("GET", URL), xhr.send();
+  }).bind(result, xhr, callback), xhr.open("GET", result.URL.href), xhr.send();
   result.xhr=xhr;
   return result;
 }
