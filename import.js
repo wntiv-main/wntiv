@@ -41,7 +41,8 @@ function url2Object(URL){
   return urlObject;
 }
 function importURL(URL, options){
-  var prom = new Promise((resolve, reject)=>{
+  options=options?options:{};
+  var prom = new Promise((function(URL, options){return function(resolve, reject){
     var result = {URL:url2Object(URL), options:options};
     xhr=new XMLHttpRequest(), xhr.onreadystatechange=(function(xhr, resolve, reject, result, options){
       if(xhr.readyState==4&&xhr.status==200){
@@ -59,6 +60,6 @@ function importURL(URL, options){
       }
     }).bind(result, xhr, resolve, reject, result, options), xhr.open("GET", result.URL.href), xhr.send();
     result.xhr=xhr;
-  });
+  };})(URL, options));
   return prom;
 }
