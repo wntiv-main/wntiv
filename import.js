@@ -40,22 +40,24 @@ function url2Object(URL){
   }else urlObject.fileext = undefined;
   return urlObject;
 }
-function importURL(URL, callback){
-  if(typeof callback!='function')callback=(()=>{});
-  var result = {URL:url2Object(URL)};
-  xhr=new XMLHttpRequest(), xhr.onreadystatechange=(function(xhr, callback){
-    if(xhr.readyState==4&&xhr.status==200){
-      this.response = xhr.response;
-      switch(this.URL.fileext){
-        case '.js':
-          callback((new Function(xhr.response)).bind(window)());
-        break;
-        default:
-          callback(xhr.response);
-        break;
+function importURL(URL, options){
+  var prom = new Promise((resolve, reject)=>{
+    var result = {URL:url2Object(URL)};
+    xhr=new XMLHttpRequest(), xhr.onreadystatechange=(function(xhr, resolve, reject, result, options){
+      if(xhr.readyState==4&&xhr.status==200){
+        this.response = xhr.response;
+        switch(this.URL.fileext){
+          case '.js':
+            if(options.runJSCode)resolve((new Function(xhr.response)).bind(window)(), result);else resolve(xhr.response, result);
+          break;
+          default:
+            resolve(xhr.response, result);
+          break;
+        }
+      }else if(xhr.readyState==4){
+        reject(xhr, result);
       }
-    }
-  }).bind(result, xhr, callback), xhr.open("GET", result.URL.href), xhr.send();
-  result.xhr=xhr;
-  return result;
+    }).bind(result, xhr, resolve, reject, result, options), xhr.open("GET", result.URL.href), xhr.send();
+    result.xhr=xhr;
+  }
 }
