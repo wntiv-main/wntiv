@@ -17,13 +17,12 @@ function url2Object(URL){
     urlObject.pathname = (c=b[1].split('/'), c.shift(), c=c.join('/'), c.split('?')[0].split('#')[0]);
   }else{
     urlObject.host = URL.split('/')[0];
+    urlObject.pathname = (c=location.pathname + URL, c.split('?')[0].split('#')[0]);
     if(!urlObject.host){
       urlObject.host = location.host;
       urlObject.protocol = location.protocol;
-      urlObject.pathname = (c=location.pathname + URL, c.split('?')[0].split('#')[0]);
     }else{
       urlObject.protocol = 'https:';
-      urlObject.pathname = '/'+(c=URL.split('/'), c.shift(), c=c.join('/'), c.split('?')[0].split('#')[0]);
     }
   }
   if(urlObject.host){
