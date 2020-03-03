@@ -1,5 +1,36 @@
 function url2Object(URL){
-  if(!document.getElementById('locationFrame'))document.body.append((i=document.createElement('iframe'), i.src=URL, i.id='locationFrame', i.style.display='none', i));
+  return new Promise((s, f)=>{
+    if(!document.getElementById('locationFrame'))document.body.append((i=document.createElement('iframe'), i.id='locationFrame', i.style.display='none', i));
+    var i =  document.getElementById('locationFrame');
+    i.onload=()=>{
+      i.onload=(e)=>{
+        x=new XMLHttpRequest();
+        x.open("GET", i.contentWindow.location.href);
+        x.onreadystatechange=()=>{
+          if(x.readyState==4){
+            if(x.status==200||x.status==304){
+              s(i.contentWindow.location);
+            }else{
+              i.onload=()=>{
+                
+              };
+              i.src='https://'+URL;
+            }
+          }
+        };
+      };
+      try{
+        i.src=URL;
+      }catch(e){
+        try{
+          i.src='https://'+URL;
+        }catch(e){
+          f(e);
+        }
+      }
+    };
+    i.src=location.href;
+  });
 }
 function importURL(URL, options){
   options=options?options:{};
