@@ -59,5 +59,6 @@ function importURL(URL, options){
       }
     }).bind(result, xhr, resolve, reject, result, options), xhr.open("GET", result.URL.href), xhr.send();
     result.xhr=xhr;
-  }
+  });
+  return prom;
 }
