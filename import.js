@@ -42,20 +42,20 @@ function url2Object(URL){
 }
 function importURL(URL, options){
   var prom = new Promise((resolve, reject)=>{
-    var result = {URL:url2Object(URL)};
+    var result = {URL:url2Object(URL), options:options};
     xhr=new XMLHttpRequest(), xhr.onreadystatechange=(function(xhr, resolve, reject, result, options){
       if(xhr.readyState==4&&xhr.status==200){
-        this.response = xhr.response;
         switch(this.URL.fileext){
           case '.js':
-            if(options.runJSCode)resolve((new Function(xhr.response)).bind(window)(), result);else resolve(xhr.response, result);
+            if(options.runJSCode)this.response = (new Function(xhr.response)).bind(window)();else this.response = xhr.response;
           break;
           default:
-            resolve(xhr.response, result);
+            this.response = xhr.response;
           break;
         }
+        resolve(result);
       }else if(xhr.readyState==4){
-        reject(xhr, result);
+        reject(result);
       }
     }).bind(result, xhr, resolve, reject, result, options), xhr.open("GET", result.URL.href), xhr.send();
     result.xhr=xhr;
