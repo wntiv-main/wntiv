@@ -11,8 +11,8 @@ function url2Object(URL){
             if(x.status==200||x.status==304){
               s(i.contentWindow.location);
             }else{
-              i.onload=()=>{
-                
+              i.onload=(e)=>{
+                console.log(e, i);
               };
               i.src='https://'+URL;
             }
