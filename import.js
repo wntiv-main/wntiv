@@ -2,34 +2,47 @@ function url2Object(URL){
   return new Promise((s, f)=>{
     if(!document.getElementById('locationFrame'))document.body.append((i=document.createElement('iframe'), i.id='locationFrame', i.style.display='none', i));
     var i =  document.getElementById('locationFrame');
-    i.onload=()=>{
-      i.onload=(e)=>{
-        x=new XMLHttpRequest();
-        x.open("GET", i.contentWindow.location.href);
-        x.onreadystatechange=()=>{
-          if(x.readyState==4){
-            if(x.status==200||x.status==304){
-              s(i.contentWindow.location);
-            }else{
-              i.onload=(e)=>{
-                console.log(e, i);
-              };
-              i.src='https://'+URL;
+    try{
+      i.onload=()=>{
+        i.onload=(e)=>{
+          x=new XMLHttpRequest();
+          x.open('GET', i.contentWindow.location.href);
+          x.onreadystatechange=()=>{
+            if(x.readyState==4){
+              switch(x.status){
+                case 200:
+                case 304:
+                  s(i.contentWindow.location);
+                break;
+                default:
+                  i.onload=()=>{
+                    x=new XMLHttpRequest();
+                    x.open('GET', i.contentWindow.location.href);
+                    x.onreadystatechange=()=>{
+                      if(x.readyState==4){
+                        switch(x.status){
+                          case 200:
+                          case 304:
+                            s(i.contentWindow.location);
+                          break;
+                          default:
+                            f(x);
+                          break;
+                        }
+                      }
+                    };
+                  };
+                  i.src='https://'+URL;
+                break;
+              }
             }
-          }
+          };
+          x.send();
         };
-      };
-      try{
         i.src=URL;
-      }catch(e){
-        try{
-          i.src='https://'+URL;
-        }catch(e){
-          f(e);
-        }
-      }
-    };
-    i.src=location.href;
+      };
+      i.src=location.href;
+    }catch(e){f(e);}
   });
 }
 function importURL(URL, options){
