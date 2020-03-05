@@ -10,11 +10,7 @@ function url2Object(URL){
           x.onreadystatechange=()=>{
             if(x.readyState==4){
               switch(x.status){
-                case 200:
-                case 304:
-                  s(i.contentWindow.location);
-                break;
-                default:
+                case 404:
                   i.onload=()=>{
                     x=new XMLHttpRequest();
                     x.open('GET', i.contentWindow.location.href);
@@ -33,6 +29,9 @@ function url2Object(URL){
                     };
                   };
                   i.src='https://'+URL;
+                break;
+                default:
+                  s(i.contentWindow.location);
                 break;
               }
             }
