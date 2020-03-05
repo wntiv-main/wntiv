@@ -13,7 +13,7 @@ function url2Object(URL){
                 case 404:
                   i.onload=()=>{
                     x=new XMLHttpRequest();
-                    x.open('GET', i.contentWindow.location.href);
+                    x.open('GET', 'https://'+URL);
                     x.onreadystatechange=()=>{
                       if(x.readyState==4){
                         switch(x.status){
