@@ -1,7 +1,7 @@
 function url2Object(URL){
   return new Promise((s, f)=>{
     if(!document.getElementById('locationFrame'))document.body.append((i=document.createElement('iframe'), i.id='locationFrame', i.style.display='none', i));
-    var i =  document.getElementById('locationFrame');
+    var i = document.getElementById('locationFrame');
     try{
       i.onload=()=>{
         i.onload=(e)=>{
