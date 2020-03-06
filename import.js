@@ -67,7 +67,7 @@ function importURL(URL, options){
         }
       }).bind(result, xhr, resolve, reject, result, options), xhr.open("GET", result.URL.href), xhr.send();
       result.xhr=xhr;
-    }).catch((e)=>{f(e)});
+    }).catch((e)=>{reject(e)});
   };})(URL, options));
   return prom;
 }
